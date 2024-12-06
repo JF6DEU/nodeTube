@@ -27,7 +27,6 @@
         .flex{
             display:flex;
             justify-content: center;
-            max-width: calc(100vw - 50px);
         }
         .searchcontainer{
             border:1px solid #fff;
@@ -85,14 +84,17 @@
     let aq = d.getElementById("aq");
     let vid = d.getElementById("video");
     let aud = d.createElement("audio");
-    let formats = {{downdata}};
+    let formats = {{formats}};
     let videoformats = {};
     let audioformats = {};
-    formats.adaptiveFormats.forEach((e, n) => {
-        if (e.type.indexOf("audio") != -1){
-            audioformats[e.audioQuality+n] = e.url;
-        } else if (e.type.indexOf("video") != -1){
-            videoformats[e.qualityLabel+n] = e.url;
+    formats.forEach((e, n) => {
+        if (e.format_note != undefined) {
+            if (e.format_note.indexOf("p") != -1){
+                videoformats[e.format_note] = e.url;
+            }
+            if (e.format_note == "medium" || e.format_note == "low"){
+                audioformats[e.format_note+n.toString()] = e.url;
+            }
         }
     });
     videoformats = Object.entries(videoformats);
@@ -108,20 +110,8 @@
         aq.appendChild(op);
     });
     var playb;
-    function readcookie(){
-        if (d.cookie.indexOf("quality") == -1) return;
-        d.cookie.split(";").find((e) => e.indexOf("quality") != -1).split("=")[1].split(",").forEach((c, s) => {
-            if (s == 0){
-                videoformats.find((search) => search == c) != -1 ? vq.value = c : null;
-            } else if (s == 1){
-                audioformats.find((search) => search == c) != -1 ? aq.value = c : null;
-            }
-        });
-    }
-    readcookie();
     function hozon(){
         let current = vid.currentTime;
-        d.cookie = `quality=${vq.value},${aq.value}; max-age=3600`;
         aud.src = audioformats[audioformats.findIndex((search) => search[0].indexOf(aq.value) != -1)][1];
         vid.src = videoformats[videoformats.findIndex((search) => search[0].indexOf(vq.value) != -1)][1];
         vid.currentTime = current;
