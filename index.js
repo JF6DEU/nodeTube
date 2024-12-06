@@ -171,6 +171,34 @@ const server = http.createServer(async (request, response) => {
                     message = returnTemplate("./templates/watch.html", {downdata: JSON.stringify(getresult)});
                 }
                 break;
+            case "/watchany":
+                fetch(proxygeturl)
+                .then(r => r.json())
+                .then((d) => {
+                    proxy = d.proxy;
+                })
+                .catch((e) => {console.error(e)});
+                if (urls.searchParams.get("v") == null || urls.searchParams.get("v").length >= 50){
+                    response.writeHead(207, {
+                        "Content-Type": "text/html"
+                    });
+                    message = returnTemplate("./templates/renderjson", {json: "<meta charset=UTF-8>誰やパラメータを渡してないやつ(っ °Д °;)っ"});
+                } else {
+                    let outform = {};
+                    response.writeHead(200, {
+                        "Content-Type": "text/html"
+                    });
+                    let v = urls.searchParams.get("v").replace(".", "").replace("/", "").replace("&", "").replace("?", "").replace("|", "").replace("(", "").replace(")", "");
+                    let getresult;
+                    try{
+                        getresult = execSync(ytdlpPath+" --proxy \""+proxy+'\" --dump-json '+v).toString();
+                        outform = JSON.stringify(JSON.parse(getresult).formats);
+                    } catch(e) {
+                        getresult = {};
+                    }
+                    message = returnTemplate("./templates/watch.html", {formats: outform});
+                }
+                break;
             case "/keiji.html":
                 message = returnTemplate("./templates/keiji.html", {});
                 break;
