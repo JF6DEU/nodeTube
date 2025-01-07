@@ -21,6 +21,13 @@ let apis = ["https://invidious.f5.si", "https://lekker.gay", "https://iv.duti.de
 let dt_post = new Array();
 dt_post["keiji_send"] = "";
 const server = http.createServer(async (request, response) => {
+    if (apis.length == 0){
+        response.writeHead(503, {
+            "Content-Type": "text/html"
+        });
+        response.end("<meta charset=\"UTF-8\">ERROR! APIを使い果たしました！インスタンスを新しく立ててください！<br>※これは人気があるインスタンスに多いです。");
+        return;
+    }
     let message;
     let urls = new URL(`http://${process.env.HOST ?? 'localhost'}${request.url}`);
     function returnTemplate(frompath, templatecontext){
@@ -41,12 +48,6 @@ const server = http.createServer(async (request, response) => {
         message = file.readFileSync("./templates/main.jpg", "binary");
         response.end(message, "binary");
         return;
-    }
-    if (apis.length == 0){
-        response.writeHead(503, {
-            "Content-Type": "text/html"
-        });
-        response.end("<meta charset=\"UTF-8\">ERROR! APIを使い果たしました！インスタンスを新しく立ててください！<br>※これは人気があるインスタンスに多いです。");
     }
     if (typeof request.headers.cookie == "undefined" || request.headers.cookie.indexOf("gz") == -1 && ( request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i == "gz") != "undefined" && request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i[0] == "gz")[1] != "ok")){
         message = returnTemplate("./templates/gizou.html", {});
