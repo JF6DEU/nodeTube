@@ -4,7 +4,8 @@ const file = require("fs");
 const AbortController = require('abort-controller');
 
 const invidiousjson = "https://api.invidious.io/instances.json?pretty=1&sort_by=type,users";
-let apis = ["https://invidious.f5.si", "https://lekker.gay", "https://iv.duti.dev"];
+let apis = ["https://invidious.f5.si", "https://lekker.gay", "https://iv.duti.dev", "https://invidious.jing.rocks"];
+/*
     fetch(invidiousjson)
     .then(r => r.json())
     .then((d) => {
@@ -15,6 +16,7 @@ let apis = ["https://invidious.f5.si", "https://lekker.gay", "https://iv.duti.de
         });
     })
     .catch((e) => {console.error(e)});
+*/
 
 let dt_post = new Array();
 dt_post["keiji_send"] = "";
@@ -39,6 +41,12 @@ const server = http.createServer(async (request, response) => {
         message = file.readFileSync("./templates/main.jpg", "binary");
         response.end(message, "binary");
         return;
+    }
+    if (apis.length == 0){
+        response.writeHead(503, {
+            "Content-Type": "text/html"
+        });
+        response.end("<meta charset=\"UTF-8\">ERROR! APIを使い果たしました！インスタンスを新しく立ててください！<br>※これは人気があるインスタンスに多いです。");
     }
     if (typeof request.headers.cookie == "undefined" || request.headers.cookie.indexOf("gz") == -1 && ( request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i == "gz") != "undefined" && request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i[0] == "gz")[1] != "ok")){
         message = returnTemplate("./templates/gizou.html", {});
@@ -185,6 +193,9 @@ const server = http.createServer(async (request, response) => {
     response.end(message);
 });
 async function fetchapi(urls){
+    if (apis.length == 0){
+        return false;
+    }
     try{
         async function fetchCore(url) {
             let option = {};
