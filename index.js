@@ -151,7 +151,7 @@ const server = http.createServer(async (request, response) => {
                     }
                     params = params.replace(".", "");
                     params = encodeURIComponent(params);
-                    let searchresult = await fetchapi(`api/v1/search?q=${params}&page=${page}`);
+                    let searchresult = await fetchapi(`/api/v1/search?q=${params}&page=${page}`);
                     message = returnTemplate("./templates/searchresult.html", {returned: JSON.stringify(searchresult)});
                 }
                 break;
@@ -167,7 +167,7 @@ const server = http.createServer(async (request, response) => {
                         "Content-Type": "text/html"
                     });
                     let v = urls.searchParams.get("v").replace(".", "").replace("/", "").replace("&", "").replace("?", "").replace("|", "").replace("(", "").replace(")", "");
-                    let getresult = await fetchapi(`api/v1/videos/${v}`);
+                    let getresult = await fetchapi(`/api/v1/videos/${v}`);
                     message = returnTemplate("./templates/watch.html", {downdata: JSON.stringify(getresult)});
                 }
                 break;
@@ -214,9 +214,9 @@ async function fetchapi(urls){
             } catch(e) {
                 if (e.code == "ECONNREFUSED" || e.code == "ENOTFOUND" || e.toString() == "TypeError: fetch failed"){
                     apis.shift();
-                    throw new Error("API timed out");
+                    console.error("API timed out");
                 } else {
-                    throw new Error("Other error"+e);
+                    console.error("Other error"+e);
                 }
             } finally {
                 clearTimeout(timeout);
