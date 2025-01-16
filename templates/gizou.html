@@ -147,7 +147,7 @@
         let d = document;
         async function getsys(c){
             if (await checkers(c)){
-                document.cookie += " {{cookiegz}}=ok; max-age=3600;";
+                document.cookie = "{{cookiegz}}=ok; max-age=3600";
                 document.getElementById("comment").disabled = true;
                 setTimeout(function(){
                     location.reload();
