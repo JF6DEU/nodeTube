@@ -2,4 +2,3 @@ docker-compose.yml
 Dockerfile
 render.yaml
 LICENSE
-index.js
