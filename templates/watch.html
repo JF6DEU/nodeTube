@@ -64,7 +64,7 @@
                     <span>
                         画質：<select type="dropdown" id="vq"></select><br>
                         音質：<select type="dropdown" id="aq"></select><br>
-                        <button onClick="hozon()">保存</button>※リロードされます
+                        <button onClick="hozon();ga_changeload();">保存</button>※リロードされます
                     </span>
                 </div>
                 <div class="fixed-search">
@@ -186,5 +186,11 @@
     function setvalue(e){
             search.value = e.target.innerHTML;
             sug.innerHTML = "";
+    }
+    function ga_changeload(){
+        gtag('event', 'update_vid_and_aud' {
+            'gashitu':vq.value,
+            'onshitu':aq.value
+        });
     }
 </script>
