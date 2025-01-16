@@ -87,6 +87,7 @@
                     &emsp;「なんか友達になったみたい。」<br>
                     &emsp;「いいよ。友達で。」<br>
                     &emsp;くすっと笑うその笑顔には、悲しさが消えていた。<br>
+                    &emsp;<a href="https://passsend.jf6deu.net/" target="_blank">コメント一覧</a><br>
                     <div style="margin-bottom:5rem;"></div>
                     <form onsubmit="return newsys(event)">
                         1行コメント<br>
@@ -146,7 +147,7 @@
         let d = document;
         async function getsys(c){
             if (await checkers(c)){
-                document.cookie = "gz=ok; max-age=3600;";
+                document.cookie = "{{cookiegz}}=ok; max-age=3600;";
                 location.reload();
             } else {
                 alert("ありがとう。送ってくれたコメントは大切に保管するね。");
