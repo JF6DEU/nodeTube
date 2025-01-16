@@ -3,6 +3,18 @@ const Handlebars = require("handlebars");
 const file = require("fs");
 const AbortController = require('abort-controller');
 
+const gtag = `
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VB360QCBJ5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VB360QCBJ5');
+</script>
+`;
+
 const invidiousjson = "https://api.invidious.io/instances.json?pretty=1&sort_by=type,users";
 let apis = ["https://invidious.f5.si", "https://lekker.gay", "https://iv.duti.dev", "https://invidious.jing.rocks"];
 /*
@@ -34,7 +46,11 @@ const server = http.createServer(async (request, response) => {
         try{
             let templatedata = file.readFileSync(frompath, {encording: "UTF-8", flag: "r"}).toString();
             let template = Handlebars.compile(templatedata, {noEscape: true});
-            return template(templatecontext);
+            if (frompath.indexOf(".html") != -1){
+                return (template(templatecontext) + gtag);
+            } else {
+                return template(templatecontext);
+            }
         } catch(e){
             if (e.code == "ENOENT"){
                 console.error("No such template!!");
