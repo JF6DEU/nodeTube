@@ -65,10 +65,12 @@ const server = http.createServer(async (request, response) => {
         response.end(message, "binary");
         return;
     }
-    if (typeof request.headers.cookie == "undefined" || request.headers.cookie.indexOf("gz") == -1 && ( request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i == "gz") != "undefined" && request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i[0] == "gz")[1] != "ok")){
+    if (typeof request.headers.cookie == "undefined" || request.headers.cookie.indexOf("gz") == -1 && ( request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i == "gz") != "undefined"){
+      if (request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i[0] == "gz")[1] != "ok")){
         message = returnTemplate("./templates/gizou.html", {});
         response.end(message);
         return;
+      }
     }
     if (request.method == "POST"){
         switch(urls.pathname){
