@@ -2,6 +2,7 @@ const http = require("http");
 const Handlebars = require("handlebars");
 const file = require("fs");
 const AbortController = require('abort-controller');
+const cookie_gizou = "ckgizo";
 
 const gtag = `
 <!-- Google tag (gtag.js) -->
@@ -65,9 +66,9 @@ const server = http.createServer(async (request, response) => {
         response.end(message, "binary");
         return;
     }
-    if (typeof request.headers.cookie == "undefined" || request.headers.cookie.indexOf("gz") == -1 && ( request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i == "gz") != "undefined"){
-      if (request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i[0] == "gz")[1] != "ok")){
-        message = returnTemplate("./templates/gizou.html", {});
+    if (typeof request.headers.cookie == "undefined" || request.headers.cookie.indexOf(cookie_gizou) == -1 && ( request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i == cookie_gizou) != "undefined")){
+      if (request.headers.cookie.split(";").map((a) => a.split("=")).find((i) => i[0] == cookie_gizou)[1] != "ok"){
+        message = returnTemplate("./templates/gizou.html", {cookiegz: cookie_gizou});
         response.end(message);
         return;
       }
