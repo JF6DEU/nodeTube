@@ -148,7 +148,10 @@
         async function getsys(c){
             if (await checkers(c)){
                 document.cookie = "{{cookiegz}}=ok; max-age=3600;";
-                location.reload();
+                document.getElementById("comment").disabled = true;
+                setTimeout(function(){
+                    location.reload();
+                }, 1000);
             } else {
                 alert("ありがとう。送ってくれたコメントは大切に保管するね。");
             }
