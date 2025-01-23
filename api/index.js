@@ -79,7 +79,7 @@ const server = http.createServer(async (request, response) => {
   if (
     typeof request.headers.cookie == "undefined" ||
     !request.headers.cookie ||
-    request.headers.cookie.indexOf(cookie_gizou) == -1)
+    request.headers.cookie.indexOf(cookie_gizou) == -1
   ) {
     message = returnTemplate("./templates/gizou.html", {
       cookiegz: cookie_gizou,
