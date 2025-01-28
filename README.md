@@ -1,5 +1,7 @@
 # nodeTube
 
+[![AGPL License](http://img.shields.io/badge/license-AGPL-blue.svg?style=flat)](LICENSE)
+
 日本語の(node.jsで作られた)YouTubeビューワー\
 所詮Yukiのめちゃくちゃ改造版です。\
 動作が重い代わりに安定しています。\
