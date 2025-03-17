@@ -19,7 +19,6 @@ const gtag = `
 const invidiousjson =
   "https://api.invidious.io/instances.json?pretty=1&sort_by=type,users";
 let apis = [
-  "https://invidious.f5.si",
   "https://lekker.gay",
   "https://iv.duti.dev",
   "https://invidious.jing.rocks",
